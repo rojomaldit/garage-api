@@ -1,4 +1,4 @@
-import { BadGatewayException } from '@nestjs/common';
+import { BadGatewayException, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Base } from '../models/base.entity';
 
@@ -32,6 +32,17 @@ export class BaseService<T extends Base> {
 			throw new BadGatewayException(error);
 		}
 		return <Promise<T>>this.genericRepository.findOne({ where: { id } });
+	}
+
+	async getOrFail(id: number): Promise<T> {
+		try {
+			const obj = await this.genericRepository.findOne({ where: { id } });
+			if (!obj) throw new BadRequestException('Object not found');
+
+			return obj;
+		} catch (error) {
+			throw new BadGatewayException(error);
+		}
 	}
 
 	getByOptions(options: any): Promise<T> {
