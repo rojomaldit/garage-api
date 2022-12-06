@@ -12,7 +12,9 @@ class TotalToCollectByRentProjection {
 export class TotalToCollectProjection {
 	constructor(rents: Rent[]) {
 		const totalTime = (startDate: Date, rentType: RentType): number => {
-			const getHours = (new Date().getTime() - startDate.getTime()) / 1000 / 60 / 60;
+			let getHours = (new Date().getTime() - startDate.getTime()) / 1000 / 60 / 60;
+			const ceilHours = Math.ceil(getHours);
+			if(ceilHours - getHours < 0.5) getHours = ceilHours;
 			switch (rentType) {
 				case RentType.hs:
 					return getHours;
