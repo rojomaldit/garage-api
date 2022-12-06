@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/services/base.service';
 import { Repository } from 'typeorm';
@@ -15,7 +15,10 @@ export class VehicleService extends BaseService<Vehicle> {
 	}
 
 	async create(vehicleDTO: VehicleDTO): Promise<number> {
+		const car = await this.getByOptions({ where: { licensePlate: vehicleDTO.licensePlate } });
+		if (car) throw new BadRequestException(`Already exists a vehicle with this license plate ${vehicleDTO.licensePlate}`);
+
 		const newCar = await this.vehicleRepository.save(vehicleDTO);
 		return newCar.id;
-	}	
+	}
 }

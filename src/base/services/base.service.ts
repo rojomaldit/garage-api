@@ -33,4 +33,12 @@ export class BaseService<T extends Base> {
 		}
 		return <Promise<T>>this.genericRepository.findOne({ where: { id } });
 	}
+
+	getByOptions(options: any): Promise<T> {
+		try {
+			return <Promise<T>>this.genericRepository.findOne(options);
+		} catch (error) {
+			throw new BadGatewayException(error);
+		}
+	}
 }
