@@ -28,5 +28,5 @@ export class Vehicle extends Base {
 	notes: string;
 
 	@OneToMany(() => Rent, (rent) => rent.vehicle)
-	rent: Rent;
+	rents: Rent[];
 }

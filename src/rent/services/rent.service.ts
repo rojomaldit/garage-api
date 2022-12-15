@@ -24,7 +24,7 @@ export class RentService extends BaseService<Rent> {
 		const vehicle = await this.vehicleService.getOrFail(rentDTO.vehicle, { relations: ['rent'] });
 
 		if (!placeGarage.isAvailable) throw new BadRequestException('Place garage is not available');
-		if (vehicle.rent) throw new BadRequestException('Vehicle is already rented');
+		if (vehicle.rents.length) throw new BadRequestException('Vehicle is already rented');
 
 		return { placeGarage, vehicle };
 	}
