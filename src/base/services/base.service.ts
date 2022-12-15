@@ -18,6 +18,19 @@ export class BaseService<T extends Base> {
 		}
 	}
 
+	update(id: number, entity: any): Promise<number> {
+		try {
+			return new Promise<number>((resolve, reject) => {
+				this.genericRepository
+					.update(id, entity)
+					.then((updated) => resolve(updated.affected))
+					.catch((err) => reject(err));
+			});
+		} catch (error) {
+			throw new BadGatewayException(error);
+		}
+	}
+
 	getAll(): Promise<T[]> {
 		try {
 			return <Promise<T[]>>this.genericRepository.find();

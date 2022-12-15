@@ -1,12 +1,11 @@
 import { IsString } from '@nestjs/class-validator';
-import { IsEnum, IsInt, IsOptional } from 'class-validator';
-import { PlaceGarageType } from '../models/placeGarage.entity';
+import { IsBoolean, IsEnum, IsInt, IsOptional } from 'class-validator';
 
 export class PlaceGarageDTO {
 	@IsString()
 	placeId: string;
 
   @IsOptional()
-	@IsEnum(PlaceGarageType)
-	placeGarageType?: PlaceGarageType = PlaceGarageType.UNCOVERED;
+	@IsBoolean()
+	isAvailable?: true;
 }

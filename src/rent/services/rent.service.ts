@@ -31,6 +31,8 @@ export class RentService extends BaseService<Rent> {
 			return newRent.id;
 		} catch (error) {
 			throw new BadRequestException(error);
+		} finally {
+			await this.placeGarageService.update(rent.placeGarage.id, { isAvailable: false });
 		}
 	}
 
