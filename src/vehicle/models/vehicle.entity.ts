@@ -1,6 +1,6 @@
 import { Base } from 'src/base/models/base.entity';
 import { Rent } from 'src/rent/models/rent.entity';
-import { Column, Entity, OneToOne } from 'typeorm';
+import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
 
 export enum VehicleType {
 	CAR = 'Car',
@@ -27,6 +27,6 @@ export class Vehicle extends Base {
 	@Column({ nullable: true })
 	notes: string;
 
-	@OneToOne(() => Rent, (rent) => rent.vehicle)
+	@OneToMany(() => Rent, (rent) => rent.vehicle)
 	rent: Rent;
 }

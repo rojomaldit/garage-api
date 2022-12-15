@@ -47,9 +47,9 @@ export class BaseService<T extends Base> {
 		return <Promise<T>>this.genericRepository.findOne({ where: { id } });
 	}
 
-	async getOrFail(id: number): Promise<T> {
+	async getOrFail(id: number, options?): Promise<T> {
 		try {
-			const obj = await this.genericRepository.findOne({ where: { id } });
+			const obj = await this.genericRepository.findOne(id, options);
 			if (!obj) throw new BadRequestException('Object not found');
 
 			return obj;

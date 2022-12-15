@@ -26,8 +26,7 @@ export class Rent extends Base {
 	@Column({ nullable: false, default: 0 })
 	totalAmountCharged: number;
 
-	@OneToOne(() => Vehicle, (vehicle) => vehicle.rent)
-	@JoinColumn()
+	@ManyToOne(() => Vehicle, (vehicle) => vehicle.rent)
 	vehicle: Vehicle;
 
 	@ManyToOne(() => PlaceGarage, (pg) => pg.rents)
