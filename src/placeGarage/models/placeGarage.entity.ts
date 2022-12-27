@@ -10,6 +10,9 @@ export class PlaceGarage extends Base {
 	@Column({ nullable: false, default: true })
 	isAvailable: boolean;
 
-  @OneToMany(() => Rent, (rent) => rent.placeGarage)
+	@Column({ default: () => `now()` })
+	createdDate: Date;
+
+	@OneToMany(() => Rent, (rent) => rent.placeGarage)
 	rents: Rent[];
 }

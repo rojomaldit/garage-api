@@ -1,4 +1,4 @@
-import { Get, Post, Delete, Put, Body, Param } from '@nestjs/common';
+import { Get, Param } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { Base } from '../models/base.entity';
 import { BaseService } from '../services/base.service';
