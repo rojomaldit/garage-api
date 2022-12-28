@@ -33,7 +33,7 @@ export class TotalToCollectProjection {
 
 		this.totalToCollectByRent = rents.map((rent) => ({
 			rentId: rent.id,
-			totalToCollect: rent.amountForTime * totalTime(rent.startDate, rent.rentType),
+			totalToCollect: rent.amountForTime * totalTime(rent.lastDateCollected, rent.rentType),
 		}));
 		this.totalToCollect = this.totalToCollectByRent.reduce((total, rent) => total + rent.totalToCollect, 0);
 	}

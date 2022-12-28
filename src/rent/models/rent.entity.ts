@@ -26,6 +26,9 @@ export class Rent extends Base {
 	@Column({ nullable: false, default: 0 })
 	totalAmountCharged: number;
 
+	@Column({ default: () => `now()` })
+	lastDateCollected: Date;
+
 	@ManyToOne(() => Vehicle, (vehicle) => vehicle.rents)
 	vehicle: Vehicle;
 

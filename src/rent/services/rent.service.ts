@@ -43,8 +43,22 @@ export class RentService extends BaseService<Rent> {
 		return newRent.id;
 	}
 
+	/**
+	 * Function to get the total to collect from all rents
+	 * @returns TotalToCollectProjection
+	 */
 	async totalToCollect(): Promise<TotalToCollectProjection> {
 		const rents = await this.getAll();
 		return new TotalToCollectProjection(rents);
+	}
+
+	/**
+	 * Function to collect rent, it updates the lastDateCollected with the current date
+	 * @param rentId Rent id
+	 * @returns void
+	 */
+	async collectRent(rentId: number): Promise<void> {
+		const rent = await this.getOrFail(rentId);
+		await this.rentRepository.update(rentId, { lastDateCollected: new Date() });
 	}
 }

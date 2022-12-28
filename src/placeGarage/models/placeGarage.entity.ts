@@ -1,6 +1,6 @@
 import { Base } from 'src/base/models/base.entity';
 import { Rent } from 'src/rent/models/rent.entity';
-import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 export class PlaceGarage extends Base {
