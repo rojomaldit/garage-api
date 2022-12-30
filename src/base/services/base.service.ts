@@ -1,5 +1,5 @@
 import { BadGatewayException, BadRequestException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Base } from '../models/base.entity';
 
 export class BaseService<T extends Base> {
@@ -58,12 +58,13 @@ export class BaseService<T extends Base> {
 		}
 	}
 
-	async delete(id: number): Promise<number> {
+	async delete(id: number, options?, validate?: (obj: T) => boolean) {
 		try {
-			const obj = await this.getOrFail(id);
-			obj.deletedAt = new Date();
+			const obj = await this.getOrFail(id, options);
 
-			return await this.update(id, obj);
+			if (validate && !validate(obj)) throw new BadRequestException('This object cannot be deleted');
+
+			await this.update(id, { deletedAt: new Date() });
 		} catch (error) {
 			throw new BadGatewayException(error);
 		}

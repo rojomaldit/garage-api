@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiResponse } from '@nestjs/swagger';
 import { BaseController } from 'src/base/controllers/base.controller';
@@ -19,5 +19,17 @@ export class PlaceGarageController extends BaseController<PlaceGarage> {
 	@ApiResponse({ status: 400, description: 'Bad Request.' })
 	async create(@Body() placeGarageDTO: PlaceGarageDTO): Promise<PlaceGarage> {
 		return this.placeGarageService.create(placeGarageDTO);
+	}
+
+	@Delete(':id')
+	@ApiResponse({ status: 200, description: 'The record has been successfully deleted.' })
+	@ApiResponse({ status: 403, description: 'Forbidden.' })
+	@ApiResponse({ status: 400, description: 'Bad Request.' })
+	async delete(@Param('id') id: number) {
+		await this.placeGarageService.delete(
+			id,
+			{ relations: ['rents'] },
+			(vehicle) => !vehicle.rents.filter((r) => !r.deletedAt).length // If the pg has rents, it can't be deleted
+		);
 	}
 }
