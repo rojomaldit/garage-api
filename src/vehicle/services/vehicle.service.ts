@@ -14,11 +14,12 @@ export class VehicleService extends BaseService<Vehicle> {
 		super(vehicleRepository);
 	}
 
-	async create(vehicleDTO: VehicleDTO): Promise<number> {
+	async create(vehicleDTO: VehicleDTO): Promise<Vehicle> {
 		const car = await this.getByOptions({ where: { licensePlate: vehicleDTO.licensePlate } });
-		if (car) throw new BadRequestException(`Already exists a vehicle with this license plate ${vehicleDTO.licensePlate}`);
+		if (car)
+			throw new BadRequestException(`Already exists a vehicle with this license plate ${vehicleDTO.licensePlate}`);
 
 		const newCar = await this.vehicleRepository.save(vehicleDTO);
-		return newCar.id;
+		return newCar;
 	}
 }

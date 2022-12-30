@@ -7,6 +7,7 @@ import { Repository } from 'typeorm';
 import { RentDTO } from '../dtos/rent.dto';
 import { Rent } from '../models/rent.entity';
 import { TotalToCollectProjection } from '../projections/totalToCollect.projection';
+import { RentCollectedHistoryService } from './rentCollectedHistory.service';
 
 @Injectable()
 export class RentService extends BaseService<Rent> {
@@ -14,7 +15,8 @@ export class RentService extends BaseService<Rent> {
 		@InjectRepository(Rent)
 		private readonly rentRepository: Repository<Rent>,
 		private readonly vehicleService: VehicleService,
-		private readonly placeGarageService: PlaceGarageService
+		private readonly placeGarageService: PlaceGarageService,
+		private readonly rentCollectedHistoryService: RentCollectedHistoryService
 	) {
 		super(rentRepository);
 	}
@@ -29,7 +31,7 @@ export class RentService extends BaseService<Rent> {
 		return { placeGarage, vehicle };
 	}
 
-	async create(rentDTO: RentDTO): Promise<number> {
+	async create(rentDTO: RentDTO): Promise<Rent> {
 		const rent = new Rent();
 		rent.rentType = rentDTO.rentType;
 		rent.amountForTime = rentDTO.amountForTime;
@@ -40,7 +42,7 @@ export class RentService extends BaseService<Rent> {
 
 		const newRent = await this.rentRepository.save(rent);
 		await this.placeGarageService.update(rent.placeGarage.id, { isAvailable: false });
-		return newRent.id;
+		return newRent;
 	}
 
 	/**
@@ -60,5 +62,18 @@ export class RentService extends BaseService<Rent> {
 	async collectRent(rentId: number): Promise<void> {
 		const rent = await this.getOrFail(rentId);
 		await this.rentRepository.update(rentId, { lastDateCollected: new Date() });
+
+		const totalToCollect = new TotalToCollectProjection([rent]).totalToCollect;
+		await this.rentCollectedHistoryService.createNewRentCollectedHistory(rent, totalToCollect);
+	}
+
+	async cancelRent(rentId: number): Promise<void> {
+		const rent = await this.getOrFail(rentId, { relations: ['placeGarage', 'vehicle'] });
+		await this.delete(rentId);
+
+		await this.placeGarageService.update(rent.placeGarage.id, { isAvailable: true });
+
+		const vehicle = await this.vehicleService.getOrFail(rent.vehicle.id);
+		if (vehicle.deleteAfterRent) await this.vehicleService.delete(vehicle.id);
 	}
 }

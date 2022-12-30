@@ -5,12 +5,12 @@ import { Base } from '../models/base.entity';
 export class BaseService<T extends Base> {
 	constructor(private readonly genericRepository: Repository<T>) {}
 
-	create(entity: any): Promise<number> {
+	create(entity: any): Promise<T> {
 		try {
-			return new Promise<number>((resolve, reject) => {
+			return new Promise<T>((resolve, reject) => {
 				this.genericRepository
 					.save(entity)
-					.then((created) => resolve(created.id))
+					.then((created) => resolve(created))
 					.catch((err) => reject(err));
 			});
 		} catch (error) {
@@ -53,6 +53,17 @@ export class BaseService<T extends Base> {
 			if (!obj) throw new BadRequestException('Object not found');
 
 			return obj;
+		} catch (error) {
+			throw new BadGatewayException(error);
+		}
+	}
+
+	async delete(id: number): Promise<number> {
+		try {
+			const obj = await this.getOrFail(id);
+			obj.deletedAt = new Date();
+
+			return await this.update(id, obj);
 		} catch (error) {
 			throw new BadGatewayException(error);
 		}

@@ -6,7 +6,7 @@ export enum VehicleType {
 	CAR = 'Car',
 	VAN = 'Van',
 	MOTORCYCLE = 'Motorcycle',
-  BIKE = 'Bike',
+	BIKE = 'Bike',
 	TRUCK = 'Truck',
 }
 
@@ -20,6 +20,9 @@ export class Vehicle extends Base {
 
 	@Column({ nullable: true })
 	phoneNumber: string;
+
+	@Column({ nullable: true, default: false })
+	deleteAfterRent: boolean;
 
 	@Column({ nullable: true })
 	address: string;

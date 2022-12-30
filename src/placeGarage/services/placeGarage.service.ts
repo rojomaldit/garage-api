@@ -14,11 +14,11 @@ export class PlaceGarageService extends BaseService<PlaceGarage> {
 		super(placeGarageRepository);
 	}
 
-	async create(placeGarageDTO: PlaceGarageDTO): Promise<number> {
+	async create(placeGarageDTO: PlaceGarageDTO): Promise<PlaceGarage> {
 		const car = await this.getByOptions({ where: { placeId: placeGarageDTO.placeId } });
 		if (car) throw new BadRequestException(`Already exists a PlaceGarage with id ${placeGarageDTO.placeId}`);
 
 		const newPlace = await this.placeGarageRepository.save(placeGarageDTO);
-		return newPlace.id;
+		return newPlace;
 	}
 }

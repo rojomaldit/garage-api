@@ -17,7 +17,7 @@ export class VehicleController extends BaseController<Vehicle> {
 	@ApiResponse({ status: 201, description: 'The record has been successfully created.' })
 	@ApiResponse({ status: 403, description: 'Forbidden.' })
 	@ApiResponse({ status: 400, description: 'Bad Request.' })
-	async create(@Body() vehicleDTO: VehicleDTO): Promise<number> {
+	async create(@Body() vehicleDTO: VehicleDTO): Promise<Vehicle> {
 		return this.vehicleService.create(vehicleDTO);
 	}
 }

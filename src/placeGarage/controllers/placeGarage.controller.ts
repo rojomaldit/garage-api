@@ -17,7 +17,7 @@ export class PlaceGarageController extends BaseController<PlaceGarage> {
 	@ApiResponse({ status: 201, description: 'The record has been successfully created.' })
 	@ApiResponse({ status: 403, description: 'Forbidden.' })
 	@ApiResponse({ status: 400, description: 'Bad Request.' })
-	async create(@Body() placeGarageDTO: PlaceGarageDTO): Promise<number> {
+	async create(@Body() placeGarageDTO: PlaceGarageDTO): Promise<PlaceGarage> {
 		return this.placeGarageService.create(placeGarageDTO);
 	}
 }

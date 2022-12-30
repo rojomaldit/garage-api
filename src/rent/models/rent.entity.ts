@@ -1,7 +1,8 @@
 import { Base } from 'src/base/models/base.entity';
 import { PlaceGarage } from 'src/placeGarage/models/placeGarage.entity';
 import { Vehicle } from 'src/vehicle/models/vehicle.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { RentCollectedHistory } from './rentCollectedHistory.entity';
 
 export enum RentType {
 	hs = 'Hourly',
@@ -13,7 +14,6 @@ export enum RentType {
 
 @Entity()
 export class Rent extends Base {
-
 	@Column({ default: () => `now()` })
 	startDate: Date;
 
@@ -23,9 +23,6 @@ export class Rent extends Base {
 	@Column({ nullable: false, default: 0 })
 	amountForTime: number;
 
-	@Column({ nullable: false, default: 0 })
-	totalAmountCharged: number;
-
 	@Column({ default: () => `now()` })
 	lastDateCollected: Date;
 
@@ -34,4 +31,7 @@ export class Rent extends Base {
 
 	@ManyToOne(() => PlaceGarage, (pg) => pg.rents)
 	placeGarage: PlaceGarage;
+
+	@OneToMany(() => Rent, (rent) => rent.vehicle)
+	rentCollectedHistory: RentCollectedHistory[];
 }
