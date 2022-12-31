@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiResponse } from '@nestjs/swagger';
 import { BaseController } from 'src/base/controllers/base.controller';
+import { VehicleGetOptions } from '../dtos/getOptions.dto';
 import { VehicleDTO } from '../dtos/vehicle.dto';
 import { Vehicle } from '../models/vehicle.entity';
 import { VehicleService } from '../services/vehicle.service';
@@ -11,6 +12,14 @@ import { VehicleService } from '../services/vehicle.service';
 export class VehicleController extends BaseController<Vehicle> {
 	constructor(private readonly vehicleService: VehicleService) {
 		super(vehicleService);
+	}
+
+	@Get("/options")
+	@ApiResponse({ status: 403, description: 'Forbidden.' })
+	@ApiResponse({ status: 400, description: 'Bad Request.' })
+	@ApiResponse({ status: 200, description: 'Ok' })
+	async findAllWithOptions(@Body() options: VehicleGetOptions) {
+		return this.vehicleService.findAllWithOptions(options)
 	}
 
 	@Post()

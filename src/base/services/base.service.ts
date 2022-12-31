@@ -31,9 +31,9 @@ export class BaseService<T extends Base> {
 		}
 	}
 
-	getAll(): Promise<T[]> {
+	getAll(options?): Promise<T[]> {
 		try {
-			return <Promise<T[]>>this.genericRepository.find();
+			return <Promise<T[]>>this.genericRepository.find(options);
 		} catch (error) {
 			throw new BadGatewayException(error);
 		}
