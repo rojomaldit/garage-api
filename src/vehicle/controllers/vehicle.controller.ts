@@ -14,12 +14,12 @@ export class VehicleController extends BaseController<Vehicle> {
 		super(vehicleService);
 	}
 
-	@Get("/options")
+	@Get('/options')
 	@ApiResponse({ status: 403, description: 'Forbidden.' })
 	@ApiResponse({ status: 400, description: 'Bad Request.' })
 	@ApiResponse({ status: 200, description: 'Ok' })
 	async findAllWithOptions(@Body() options: VehicleGetOptions) {
-		return this.vehicleService.findAllWithOptions(options)
+		return this.vehicleService.findAllWithOptions(options);
 	}
 
 	@Post()
