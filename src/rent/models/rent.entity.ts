@@ -1,8 +1,8 @@
 import { Base } from 'src/base/models/base.entity';
 import { PlaceGarage } from 'src/placeGarage/models/placeGarage.entity';
+import { RentCollectedHistory } from 'src/rentCollectedHistory/models/rentCollectedHistory.entity';
 import { Vehicle } from 'src/vehicle/models/vehicle.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
-import { RentCollectedHistory } from './rentCollectedHistory.entity';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 export enum RentType {
 	hs = 'Hourly',

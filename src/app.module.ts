@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { PlaceGarageModule } from './placeGarage/placeGarage.module';
 import { SnakeNamingStrategy } from 'typeorm-snake-naming-strategy';
 import { RentModule } from './rent/rent.module';
+import { RentCollectedHistoryModule } from './rentCollectedHistory/rentCollectedHostory.module';
 
 @Module({
 	imports: [
@@ -26,6 +27,7 @@ import { RentModule } from './rent/rent.module';
 		PlaceGarageModule,
 		RentModule,
 		AuthModule,
+		RentCollectedHistoryModule,
 	],
 	controllers: [],
 	providers: [],

@@ -2,12 +2,13 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/services/base.service';
 import { PlaceGarageService } from 'src/placeGarage/services/placeGarage.service';
+import { RentCollectHistoryDTO } from 'src/rentCollectedHistory/dtos/rent.dto';
+import { RentCollectedHistoryService } from 'src/rentCollectedHistory/services/rentCollectedHistory.service';
 import { VehicleService } from 'src/vehicle/services/vehicle.service';
 import { Repository } from 'typeorm';
 import { RentDTO } from '../dtos/rent.dto';
 import { Rent } from '../models/rent.entity';
 import { TotalToCollectProjection } from '../projections/totalToCollect.projection';
-import { RentCollectedHistoryService } from './rentCollectedHistory.service';
 
 @Injectable()
 export class RentService extends BaseService<Rent> {
@@ -64,7 +65,11 @@ export class RentService extends BaseService<Rent> {
 		await this.rentRepository.update(rentId, { lastDateCollected: new Date() });
 
 		const totalToCollect = new TotalToCollectProjection([rent]).totalToCollect;
-		await this.rentCollectedHistoryService.createNewRentCollectedHistory(rent, totalToCollect);
+
+		const newRentCollectHistoryDTO = new RentCollectHistoryDTO();
+		newRentCollectHistoryDTO.rent = rent;
+		newRentCollectHistoryDTO.amountCollected = totalToCollect;
+		await this.rentCollectedHistoryService.createNewRentCollectedHistory(newRentCollectHistoryDTO);
 	}
 
 	async cancelRent(rentId: number): Promise<void> {
