@@ -5,11 +5,11 @@ import { Vehicle } from 'src/vehicle/models/vehicle.entity';
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 export enum RentType {
-	hs = 'Hourly',
-	ds = 'Daily',
-	ws = 'Weekly',
-	ms = 'Monthly',
-	yrs = 'Yearly',
+	Hourly = 'Hourly',
+	Daily = 'Daily',
+	Weekly = 'Weekly',
+	Monthly = 'Monthly',
+	Yearly = 'Yearly',
 }
 
 @Entity()

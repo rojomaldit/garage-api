@@ -14,17 +14,17 @@ export class TotalToCollectProjection {
 		const totalTime = (startDate: Date, rentType: RentType): number => {
 			let getHours = (new Date().getTime() - startDate.getTime()) / 1000 / 60 / 60;
 			const ceilHours = Math.ceil(getHours);
-			if(ceilHours - getHours < 0.5) getHours = ceilHours;
+			if (ceilHours - getHours < 0.5) getHours = ceilHours;
 			switch (rentType) {
-				case RentType.hs:
+				case RentType.Hourly:
 					return getHours;
-				case RentType.ds:
+				case RentType.Daily:
 					return getHours / 24;
-				case RentType.ws:
+				case RentType.Weekly:
 					return getHours / 24 / 7;
-				case RentType.ms:
+				case RentType.Monthly:
 					return getHours / 24 / new Date().getDate();
-				case RentType.yrs:
+				case RentType.Yearly:
 					return getHours / 24 / 365;
 			}
 		};

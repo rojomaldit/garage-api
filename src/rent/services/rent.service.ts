@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseService } from 'src/base/services/base.service';
 import { PlaceGarageService } from 'src/placeGarage/services/placeGarage.service';
-import { RentCollectHistoryDTO } from 'src/rentCollectedHistory/dtos/rent.dto';
+import { RentCollectHistoryDTO } from 'src/rentCollectedHistory/dtos/rentCollectHistoryDTO.dto';
 import { RentCollectedHistoryService } from 'src/rentCollectedHistory/services/rentCollectedHistory.service';
 import { VehicleService } from 'src/vehicle/services/vehicle.service';
 import { Repository } from 'typeorm';
