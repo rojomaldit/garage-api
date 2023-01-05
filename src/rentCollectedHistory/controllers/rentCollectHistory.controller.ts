@@ -1,4 +1,4 @@
-import { Body, Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiResponse } from '@nestjs/swagger';
 import { BaseController } from 'src/base/controllers/base.controller';
@@ -17,7 +17,7 @@ export class RentCollectedHistoryController extends BaseController<RentCollected
 	@ApiResponse({ status: 201, description: 'The record has been successfully created.' })
 	@ApiResponse({ status: 403, description: 'Forbidden.' })
 	@ApiResponse({ status: 400, description: 'Bad Request.' })
-	async getRentCollectedHistory(@Body() historyOptions: HistoryOptionsDTO) {
+	async getRentCollectedHistory(@Query() historyOptions: HistoryOptionsDTO) {
 		return this.rentHistoryService.getRentCollectedHistory(historyOptions.type);
 	}
 }
