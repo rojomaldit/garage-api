@@ -83,7 +83,7 @@ export class RentCollectedHistoryService extends BaseService<RentCollectedHistor
 				acc.push(curr);
 			}
 			return acc;
-		}, []);
+		}, []).sort((a, b) => a.collectedOn - b.collectedOn);
 
 		return historyProjected;
 	}
