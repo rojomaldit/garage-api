@@ -75,7 +75,7 @@ export class RentCollectedHistoryService extends BaseService<RentCollectedHistor
 		const historyProjected = new RentCollectedHistoryProjection(rentCollectedHistory, type);
 
 		// Group by collectedOn and sum amountCollected
-		const groupedHistory: RentCollectedHistoryProjection[] = historyProjected.history.reduce((acc, curr) => {
+		historyProjected.history = historyProjected.history.reduce((acc, curr) => {
 			const found = acc.find((item) => item.collectedOn === curr.collectedOn);
 			if (found) {
 				found.amountCollected += curr.amountCollected;
@@ -85,6 +85,6 @@ export class RentCollectedHistoryService extends BaseService<RentCollectedHistor
 			return acc;
 		}, []);
 
-		return groupedHistory;
+		return historyProjected;
 	}
 }
