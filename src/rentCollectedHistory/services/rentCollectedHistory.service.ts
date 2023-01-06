@@ -44,9 +44,9 @@ export class RentCollectedHistoryService extends BaseService<RentCollectedHistor
 	}
 
 	async getRentCollectedHistory(type: RentType) {
-		let rentCollectedHistory = (
-			await this.getAll({ relations: ['rent'] })
-		).filter((rent) => rent.rent.rentType === type);
+		let rentCollectedHistory = (await this.getAll({ relations: ['rent'] })).filter(
+			(rent) => rent.rent.rentType === type
+		);
 
 		switch (type) {
 			case RentType.Hourly:
@@ -72,6 +72,19 @@ export class RentCollectedHistoryService extends BaseService<RentCollectedHistor
 				});
 		}
 
-		return new RentCollectedHistoryProjection(rentCollectedHistory, type);
+		const historyProjected = new RentCollectedHistoryProjection(rentCollectedHistory, type);
+
+		// Group by collectedOn and sum amountCollected
+		const groupedHistory = historyProjected.history.reduce((acc, curr) => {
+			const found = acc.find((item) => item.collectedOn === curr.collectedOn);
+			if (found) {
+				found.amountCollected += curr.amountCollected;
+			} else {
+				acc.push(curr);
+			}
+			return acc;
+		}, []);
+
+		return groupedHistory;
 	}
 }
