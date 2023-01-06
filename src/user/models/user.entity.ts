@@ -21,11 +21,9 @@ export class User extends Base {
 	lastName: string;
 
 	@Column()
-	@Index({ unique: true })
 	email: string;
 
 	@Column()
-	@Index({ unique: true })
 	phone: string;
 
 	@Type(() => Role)
