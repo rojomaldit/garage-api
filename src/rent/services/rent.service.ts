@@ -39,7 +39,7 @@ export class RentService extends BaseService<Rent> {
 		if (rentDTO.rentType) rent.rentType = rentDTO.rentType;
 		if (rentDTO.amountForTime) rent.amountForTime = rentDTO.amountForTime;
 
-		const updatedRent = await this.update(rent.id, rent);
+		await this.update(rent.id, rent);
 	}
 
 	async validateRent(rentDTO: RentDTO) {
