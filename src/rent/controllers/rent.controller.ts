@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Param, Post, UseGuards, Delete } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards, Delete, Patch } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiResponse } from '@nestjs/swagger';
 import { BaseController } from 'src/base/controllers/base.controller';
 import { RentDTO } from '../dtos/rent.dto';
+import { UpdateRentDTO } from '../dtos/updateRent.dto';
 import { Rent } from '../models/rent.entity';
 import { TotalToCollectProjection } from '../projections/totalToCollect.projection';
 import { RentService } from '../services/rent.service';
@@ -12,6 +13,14 @@ import { RentService } from '../services/rent.service';
 export class RentController extends BaseController<Rent> {
 	constructor(private readonly rentService: RentService) {
 		super(rentService);
+	}
+
+	@Patch()
+	@ApiResponse({ status: 200, description: 'The record has been successfully updated.' })
+	@ApiResponse({ status: 403, description: 'Forbidden.' })
+	@ApiResponse({ status: 400, description: 'Bad Request.' })
+	async update(@Body() rentDTO: UpdateRentDTO) {
+		this.rentService.updateRent(rentDTO);
 	}
 
 	@Post()

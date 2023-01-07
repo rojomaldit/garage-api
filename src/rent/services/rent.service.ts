@@ -7,6 +7,7 @@ import { RentCollectedHistoryService } from 'src/rentCollectedHistory/services/r
 import { VehicleService } from 'src/vehicle/services/vehicle.service';
 import { Repository } from 'typeorm';
 import { RentDTO } from '../dtos/rent.dto';
+import { UpdateRentDTO } from '../dtos/updateRent.dto';
 import { Rent } from '../models/rent.entity';
 import { TotalToCollectProjection } from '../projections/totalToCollect.projection';
 
@@ -20,6 +21,25 @@ export class RentService extends BaseService<Rent> {
 		private readonly rentCollectedHistoryService: RentCollectedHistoryService
 	) {
 		super(rentRepository);
+	}
+
+	async updateRent(rentDTO: UpdateRentDTO) {
+		const rent = await this.getOrFail(rentDTO.rentId);
+
+		if (rentDTO.vehicleId) {
+			const vehicle = await this.vehicleService.getOrFail(rentDTO.vehicleId, { relations: ['rents'] });
+			if (vehicle.rents.length) throw new BadRequestException('Vehicle is already rented');
+			rent.vehicle = vehicle;
+		}
+		if (rentDTO.placeGarageId) {
+			const placeGarage = await this.placeGarageService.getOrFail(rentDTO.placeGarageId);
+			if (!placeGarage.isAvailable) throw new BadRequestException('Place garage is not available');
+			rent.placeGarage = placeGarage;
+		}
+		if (rentDTO.rentType) rent.rentType = rentDTO.rentType;
+		if (rentDTO.amountForTime) rent.amountForTime = rentDTO.amountForTime;
+
+		const updatedRent = await this.update(rent.id, rent);
 	}
 
 	async validateRent(rentDTO: RentDTO) {
