@@ -13,6 +13,12 @@ export enum VehicleType {
 @Entity()
 export class Vehicle extends Base {
 	@Column({ length: 15, nullable: false })
+	name: string;
+
+	@Column({ length: 50, nullable: false })
+	email: string;
+
+	@Column({ length: 15, nullable: false })
 	licensePlate: string;
 
 	@Column({ nullable: false, type: 'enum', enum: VehicleType })

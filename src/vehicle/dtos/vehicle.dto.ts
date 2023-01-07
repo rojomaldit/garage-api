@@ -4,6 +4,12 @@ import { VehicleType } from '../models/vehicle.entity';
 
 export class VehicleDTO {
 	@IsString()
+	name: string;
+
+	@IsString()
+	email: string;
+
+	@IsString()
 	licensePlate: string;
 
 	@IsEnum(VehicleType)
