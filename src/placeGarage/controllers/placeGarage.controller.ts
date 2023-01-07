@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
+import { Patch } from '@nestjs/common/decorators';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiResponse } from '@nestjs/swagger';
 import { BaseController } from 'src/base/controllers/base.controller';
 import { PlaceGarageDTO } from '../dtos/placeGarage.dto';
+import { UpdateGarageDTO } from '../dtos/updateGarage.dto';
 import { PlaceGarage } from '../models/placeGarage.entity';
 import { PlaceGarageService } from '../services/placeGarage.service';
 
@@ -11,6 +13,14 @@ import { PlaceGarageService } from '../services/placeGarage.service';
 export class PlaceGarageController extends BaseController<PlaceGarage> {
 	constructor(private readonly placeGarageService: PlaceGarageService) {
 		super(placeGarageService);
+	}
+
+	@Patch()
+	@ApiResponse({ status: 200, description: 'The record has been successfully updated.' })
+	@ApiResponse({ status: 403, description: 'Forbidden.' })
+	@ApiResponse({ status: 400, description: 'Bad Request.' })
+	async update(@Body() garageDTO: UpdateGarageDTO) {
+		this.placeGarageService.updatePlaceGarage(garageDTO);
 	}
 
 	@Post()
