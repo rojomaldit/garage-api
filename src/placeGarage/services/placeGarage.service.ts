@@ -30,8 +30,11 @@ export class PlaceGarageService extends BaseService<PlaceGarage> {
 			const place = await this.getByOptions({ where: { placeId: updateDTO.placeId } });
 			if (place && place.id !== placeGarage.id)
 				throw new BadRequestException(`Already exists a PlaceGarage with id ${updateDTO.placeId}`);
+
+			placeGarage.placeId = updateDTO.placeId;
 		}
 
+		await this.placeGarageRepository.update(placeGarage.id, placeGarage);
 	}
 
 }
