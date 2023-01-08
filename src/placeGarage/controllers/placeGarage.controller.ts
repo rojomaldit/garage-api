@@ -20,7 +20,7 @@ export class PlaceGarageController extends BaseController<PlaceGarage> {
 	@ApiResponse({ status: 403, description: 'Forbidden.' })
 	@ApiResponse({ status: 400, description: 'Bad Request.' })
 	async update(@Body() garageDTO: UpdateGarageDTO) {
-		this.placeGarageService.updatePlaceGarage(garageDTO);
+		return this.placeGarageService.updatePlaceGarage(garageDTO);
 	}
 
 	@Post()

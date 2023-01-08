@@ -20,7 +20,7 @@ export class RentController extends BaseController<Rent> {
 	@ApiResponse({ status: 403, description: 'Forbidden.' })
 	@ApiResponse({ status: 400, description: 'Bad Request.' })
 	async update(@Body() rentDTO: UpdateRentDTO) {
-		this.rentService.updateRent(rentDTO);
+		return this.rentService.updateRent(rentDTO);
 	}
 
 	@Post()

@@ -20,7 +20,7 @@ export class VehicleController extends BaseController<Vehicle> {
 	@ApiResponse({ status: 403, description: 'Forbidden.' })
 	@ApiResponse({ status: 400, description: 'Bad Request.' })
 	async update(@Body() vehicleDTO: UpdateVehicleDTO) {
-		this.vehicleService.updateVehicle(vehicleDTO);
+		return this.vehicleService.updateVehicle(vehicleDTO);
 	}
 
 	@Get('/options')
